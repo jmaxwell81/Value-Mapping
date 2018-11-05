@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function($scope, $rootScope) {
+	var c = this;
+	
+	c.changeAccount = function(selectedAcc){
+		$rootScope.$broadcast("AVMAccountSelected", selectedAcc);
+	}
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.form-horizontal {
+    position: left;
+    padding-top: 10px;
+  	max-width: 300px;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>true</has_preview>
+        <id>account-form</id>
+        <internal>false</internal>
+        <link/>
+        <name>Account Form</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+  /* populate the 'data' object */
+  /* e.g., data.table = $sp.getValue('table'); */
+	
+	data.accounts = [{}];
+	
+	var account = new GlideRecord('x_snc_acc_val_map_acccounts');
+	//relatedNodes.addQuery('Account','Deutsche Bank');
+	account.query();
+	
+	while(account.next()){
+		var a = {sys_id: account.getValue('sys_id'), name: account.getValue('company_name')};
+		
+		data.accounts.push(a);
+	}
+	data.accounts.shift();
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-10-25 12:28:59</sys_created_on>
+        <sys_id>39d49c76db51eb80a650789eaf9619e4</sys_id>
+        <sys_mod_count>99</sys_mod_count>
+        <sys_name>Account Form</sys_name>
+        <sys_package display_value="Account Value Mapping" source="x_snc_acc_val_map">49168e13db271340a650789eaf96198b</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Account Value Mapping">49168e13db271340a650789eaf96198b</sys_scope>
+        <sys_update_name>sp_widget_39d49c76db51eb80a650789eaf9619e4</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-10-31 10:43:36</sys_updated_on>
+        <template><![CDATA[<form class="form-horizontal">
+  <div class="form-group">
+    <label class="col-xs-12 col-md-3 control-label">
+      <span class="label-text">Account</span>
+    </label>
+    <div class="col-xs-12 col-md-9 form-field input_controls">
+      <select class="form-control" ng-model="selectedAcc" ng-change="c.changeAccount(selectedAcc)" ng-options="a.name for a in c.data.accounts">
+      </select>
+    </div>
+  </div>
+</form>]]></template>
+    </sp_widget>
+</record_update>

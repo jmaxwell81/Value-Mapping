@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_ui_page">
+    <sys_ui_page action="INSERT_OR_UPDATE">
+        <category>general</category>
+        <client_script/>
+        <description>Account Value Map - maps nodes based on their weighting</description>
+        <direct>true</direct>
+        <endpoint>x_snc_acc_val_map_Account Map.do</endpoint>
+        <html><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css" rel="stylesheet" type="text/css"/>
+	
+<style type="text/css">
+	
+</style>
+	
+<script src="x_snc_acc_val_map.angular_app_visnetwork.jsdbx"></script>
+	
+<div ng-app="visNetwork" ng-controller="visNetworkCtrl as appctrl"></div>
+	
+</j:jelly>]]></html>
+        <name>Account Map</name>
+        <processing_script/>
+        <sys_class_name>sys_ui_page</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-08-01 14:27:44</sys_created_on>
+        <sys_id>ebb932dbdb671340a650789eaf96192c</sys_id>
+        <sys_mod_count>72</sys_mod_count>
+        <sys_name>Account Map</sys_name>
+        <sys_package display_value="Account Value Mapping" source="x_snc_acc_val_map">49168e13db271340a650789eaf96198b</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Account Value Mapping">49168e13db271340a650789eaf96198b</sys_scope>
+        <sys_update_name>sys_ui_page_ebb932dbdb671340a650789eaf96192c</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-08-03 08:00:36</sys_updated_on>
+    </sys_ui_page>
+</record_update>

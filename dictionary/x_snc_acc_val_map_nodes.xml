@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <element label="Nodes" max_length="40" name="x_snc_acc_val_map_nodes" type="collection">
+        <element label="Name of Person/Solution/Problem" max_length="40" name="label" type="string"/>
+        <element label="Related Nodes" max_length="32" name="related_nodes" reference="x_snc_acc_val_map_nodes" type="glide_list"/>
+        <element choice="1" label="Type" max_length="40" name="type" type="choice">
+            <choice>
+                <element label="Alternative Solution" value="Alternative Solution"/>
+                <element label="Business Issue" value="Business Issue"/>
+                <element label="Current Solution" value="Current Solution"/>
+                <element label="Employee" value="Employee"/>
+                <element label="Partner" value="Partner"/>
+                <element label="PLS" value="PLS"/>
+                <element label="Problem" value="Problem"/>
+                <element label="Project" value="Project"/>
+                <element label="SN Solution" value="SN Solution"/>
+                <element label="Value" value="Value"/>
+            </choice>
+        </element>
+        <element label="Account" mandatory="true" max_length="32" name="u_account" reference="x_snc_acc_val_map_acccounts" type="reference"/>
+        <element choice="1" label="Budget" mandatory="true" max_length="40" name="u_budget" type="integer">
+            <choice>
+                <element label="1" sequence="0" value="1"/>
+                <element label="2" sequence="1" value="2"/>
+                <element label="3" sequence="2" value="3"/>
+                <element label="4" sequence="3" value="4"/>
+                <element label="5" sequence="4" value="5"/>
+            </choice>
+        </element>
+        <element choice="1" label="Influence" mandatory="true" max_length="40" name="u_influence" type="integer">
+            <choice>
+                <element label="1" sequence="0" value="1"/>
+                <element label="2" sequence="1" value="2"/>
+                <element label="3" sequence="2" value="3"/>
+                <element label="4" sequence="3" value="4"/>
+                <element label="5" sequence="4" value="5"/>
+            </choice>
+        </element>
+        <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#13;&#10;&#9;var weight = current.u_budget + current.u_influence;&#13;&#10;&#9;return weight;  // return the calculated value&#13;&#10;&#13;&#10;})(current);" label="Weighting" max_length="40" name="u_weight" read_only="true" type="integer"/>
+        <index name="index">
+            <element name="related_nodes"/>
+        </index>
+        <index name="index2">
+            <element name="u_account"/>
+        </index>
+    </element>
+</database>

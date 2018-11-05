@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_theme">
+    <sp_theme action="INSERT_OR_UPDATE">
+        <css_variables>$account-form-header-customer-selection-height: $navbar-height;</css_variables>
+        <footer/>
+        <footer_fixed>false</footer_fixed>
+        <header display_value="Stock Header">bf5ec2f2cb10120000f8d856634c9c0c</header>
+        <name>AVM</name>
+        <navbar_fixed>true</navbar_fixed>
+        <sys_class_name>sp_theme</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-10-30 16:21:50</sys_created_on>
+        <sys_id>650a7614dbedef80a650789eaf96197b</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>AVM</sys_name>
+        <sys_package display_value="Account Value Mapping" source="x_snc_acc_val_map">49168e13db271340a650789eaf96198b</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Account Value Mapping">49168e13db271340a650789eaf96198b</sys_scope>
+        <sys_update_name>sp_theme_650a7614dbedef80a650789eaf96197b</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-10-30 16:24:28</sys_updated_on>
+    </sp_theme>
+</record_update>

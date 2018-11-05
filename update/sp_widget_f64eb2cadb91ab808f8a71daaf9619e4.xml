@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function($scope, $rootScope, spModal) {
+	var c = this;
+	
+	//build network based on account selection
+	$rootScope.$on("AVMAccountSelected", function(evt, results){
+		
+		//set loading parameter
+		c.data.loading = true;
+		
+		//set selected account id
+		c.data.acc_id = results.sys_id;
+		c.data.acc_name = results.name;
+		
+		//update server with input data 
+		c.server.update().then(function(){
+			//c.input.action = 'getAccountNodes';
+			c.data.loading = false;
+			
+			var nodes = new vis.DataSet(c.data.nodes);
+			var edges = new vis.DataSet(c.data.edges);
+
+			//create a network, attach it to div element
+			var container = document.getElementById("network");
+
+			//provide the data in the vis format
+			var visData = {
+				nodes: nodes,
+				edges: edges
+			};
+			
+			//define the options
+			var options = {
+				manipulation: {
+					enabled: true,
+					initiallyActive: false,
+					addNode: function(nodeData, callback) {
+						c.openAddNode(nodeData, callback);
+					},
+					addEdge: function(edgeData, callback) {
+						c.addEdge(edgeData, callback);	
+					},
+					editEdge: false,
+					deleteNode: function(data, callback) {
+						c.openDeleteNode(data, callback);
+					},
+					deleteEdge: function(data, callback) {
+						c.openDeleteEdge(data, callback);
+					},
+					controlNodeStyle: {
+						//all node options are valid.
+					}
+				}
+			};
+
+			//initialise the visJS network
+			var network = new vis.Network(container, visData, options);
+		});
+	});
+
+	//open modal for new node data
+	c.openAddNode = function(nodeData, callback){
+
+		c.modalInstance = spModal.open({
+			title: 'Add Node',
+			widget: 'avm_add_node',
+			widgetInput: { 
+				acc_id: c.data.acc_id,
+				acc_name: c.data.acc_name
+			},
+			buttons: [],
+			footerStyle: {
+				display: 'none'
+			}
+		});
+
+		c.nodeData = nodeData;
+		c.callback = callback;
+	};
+
+	//listen for event of add node button click
+	$rootScope.$on('AVMAddNode', function(event, node){
+
+		//get properties of node in vis node format
+		var n = c.getNodeProperties(node);
+
+		//set node data
+		c.nodeData.label = n.label;
+		c.nodeData.shape = n.shape;
+		c.nodeData.value = n.value;
+		c.nodeData.color = n.color;
+
+		//request server to create node
+		c.server.get({
+			action: "addNode",
+			label: node.label,
+			type: node.type,
+			weight: node.weight,
+			acc_id: c.data.acc_id
+		}).then(function(r) {
+
+			//retrieve new node id from server script and set
+			c.nodeData.id = r.data.newNodeID;
+			c.callback(c.nodeData);
+		});
+	});
+	
+	//open modal for confirmation of deleting node
+	c.openDeleteNode = function(data, callback){
+		c.modalInstance = spModal.confirm("Are you sure you want to delete this node?").then(function(confirmed){
+			if(confirmed){
+				callback(data);
+
+				//request server to delete node
+				c.server.get({
+					action: "deleteNode",
+					del_id: data.nodes[0]
+				});
+
+				//loop through edges and request server to delete them
+				for (var e = 0; e < data.edges.length; e++){
+					c.server.get({
+						action: "deleteEdge",
+						del_id: data.edges[e]
+					});
+				}
+			}
+		});
+	};
+	
+	//adds edge to network
+	c.addEdge = function(edgeData, callback){
+		
+		//check if new edge is to itself
+		if (edgeData.from === edgeData.to) {
+
+			//ask for confirmation of connecting to itself
+			//change this to be a modal confirm
+			var r = confirm("Do you want to connect the node to itself?");
+			if (r === true) {
+				
+				//request server to add edge
+				c.server.get({
+					action: "addEdge",
+					edge_from: edgeData.from,
+					edge_to: edgeData.to
+				}).then(function(r) {
+					
+					//retrieve new edge id from server script and set
+					edgeData.id = r.data.newEdgeID;
+					callback(edgeData);
+				});
+			}
+		}
+		else {
+			
+			//request server to add edge
+			c.server.get({
+				action: "addEdge",
+				edge_from: edgeData.from,
+				edge_to: edgeData.to
+			}).then(function(r) {
+				
+				//retrieve new edge id from server script and set
+				edgeData.id = r.data.newEdgeID;
+				callback(edgeData);
+			});
+		}
+	};
+	
+	//open modal confirm for deleting edge
+	c.openDeleteEdge = function(data, callback){
+		c.modalInstance = spModal.confirm("Are you sure you want to delete this edge?").then(function(confirmed){
+			if(confirmed){
+				callback(data);
+
+				//request server to delete selected edge
+				c.server.get({
+					action: "deleteEdge",
+					del_id: data.edges[0]
+				});
+			}
+		});
+	};
+	
+	//returns a vis node object
+	//pass node that contains node.type & node.weight
+	c.getNodeProperties = function(node){
+		var colour, shape;
+		if (node.type == 'Employee'){
+			colour = '#91b7c7';
+			shape = 'dot';
+		}
+		else if (node.type == 'PLS'){
+			colour = '#dcd6f7';
+			shape = 'dot';
+		}
+		else if (node.type == 'Partner'){
+			colour = '#8aaa79';
+			shape = 'dot';
+		}
+		else if (node.type == 'Project'){
+			colour = '#d1f5ff';
+			shape = 'triangle';
+		}
+		else if (node.type == 'SN Solution'){
+			colour = '#abc8c0';
+			shape = 'square';
+		}
+		else if (node.type == 'Current Solution'){
+			colour = '#fff4e9';
+			shape = 'square';
+		}
+		else if (node.type == 'Alternative Solution'){
+			colour = '#e8dbc5';
+			shape = 'square';
+		}
+		else if (node.type == 'Value'){
+			colour = '#b185a7';
+			shape = 'star';
+		}
+		else if (node.type == 'Problem'){
+			colour = '#cb8589';
+			shape = 'hexagon';
+		}
+		else if (node.type == 'Business Issue'){
+			colour = '#f4ac45';
+			shape = 'diamond';
+		}
+
+		var n = {id: '', label: node.label, shape: shape, value: node.weight, color: colour};
+		return n;
+	};
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>$account-form-header-customer-selection-height: 85px !default;
+
+#network {
+  height: calc(100vh - $account-form-header-customer-selection-height - 80px);
+  width: calc(100vw-15px);
+}
+</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>true</has_preview>
+        <id>account-value-mapping</id>
+        <internal>false</internal>
+        <link/>
+        <name>Account Value Mapping</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	input = input || {};
+	if (input){
+		if (input.action){	
+			if (input.action == 'addNode'){	
+				var newNode = new GlideRecord('x_snc_acc_val_map_nodes');
+				newNode.initialize(); 
+				newNode.label = input.label;
+				newNode.type = input.type;
+				newNode.u_account = input.acc_id;
+				newNode.u_weight = input.weight;
+				data.newNodeID = newNode.insert();
+			}
+			else if (input.action == 'deleteNode'){	
+				var deleteNode = new GlideRecord('x_snc_acc_val_map_nodes')
+				deleteNode.addQuery('sys_id', input.del_id);
+				deleteNode.query();
+				deleteNode.next();
+				data.nodeDeleted = deleteNode.deleteRecord();
+			}
+			else if (input.action == 'addEdge'){	
+				var newEdge = new GlideRecord('x_snc_acc_val_map_edges');
+				newEdge.initialize(); 
+				newEdge.u_from = input.edge_from;
+				newEdge.u_to = input.edge_to;
+				data.newEdgeID = newEdge.insert();
+			}
+			else if (input.action == 'deleteEdge'){	
+				var deleteEdge = new GlideRecord('x_snc_acc_val_map_edges')
+				deleteEdge.addQuery('sys_id', input.del_id);
+				deleteEdge.query();
+				deleteEdge.next();
+				data.edgeDeleted = deleteEdge.deleteRecord();
+			}
+		}
+		else {
+			data.nodes = [{}];
+			data.edges = [{}];
+
+			//get account input from form
+			var node = new GlideRecord('x_snc_acc_val_map_nodes');
+			node.addQuery('u_account', input.acc_id);
+			node.query();
+			while(node.next()){
+				var shape, colour;
+
+				if (node.type == 'Employee'){
+					colour = '#91b7c7';
+					shape = 'dot';
+				}
+				else if (node.type == 'PLS'){
+					colour = '#dcd6f7';
+					shape = 'dot';
+				}
+				else if (node.type == 'Partner'){
+					colour = '#8aaa79';
+					shape = 'dot';
+				}
+				else if (node.type == 'Project'){
+					colour = '#d1f5ff';
+					shape = 'triangle';
+				}
+				else if (node.type == 'SN Solution'){
+					colour = '#abc8c0';
+					shape = 'square';
+				}
+				else if (node.type == 'Current Solution'){
+					colour = '#fff4e9';
+					shape = 'square';
+				}
+				else if (node.type == 'Alternative Solution'){
+					colour = '#e8dbc5';
+					shape = 'square';
+				}
+				else if (node.type == 'Value'){
+					colour = '#b185a7';
+					shape = 'star';
+				}
+				else if (node.type == 'Problem'){
+					colour = '#cb8589';
+					shape = 'hexagon';
+				}
+				else if (node.type == 'Business Issue'){
+					colour = '#f4ac45';
+					shape = 'diamond';
+				}
+
+				var n = {id: node.getValue('sys_id'), label: node.getValue('label'), shape: shape, value: node.getValue('u_weight'), color: colour};
+				data.nodes.push(n);
+			}
+
+			var edge = new GlideRecord('x_snc_acc_val_map_edges');
+			//add query to only get edges for selected account
+			//edge.addQuery('u_account', input.acc_id);
+			edge.query();
+
+			while(edge.next()){
+				var e = {id: edge.getValue('sys_id'), from: edge.getValue('u_from'), to: edge.getValue('u_to')};
+
+				data.edges.push(e);
+			}
+
+			data.nodes.shift();
+			data.edges.shift();
+		}
+	}
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-10-23 16:53:54</sys_created_on>
+        <sys_id>f64eb2cadb91ab808f8a71daaf9619e4</sys_id>
+        <sys_mod_count>311</sys_mod_count>
+        <sys_name>Account Value Mapping</sys_name>
+        <sys_package display_value="Account Value Mapping" source="x_snc_acc_val_map">49168e13db271340a650789eaf96198b</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Account Value Mapping">49168e13db271340a650789eaf96198b</sys_scope>
+        <sys_update_name>sp_widget_f64eb2cadb91ab808f8a71daaf9619e4</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-11-01 13:55:23</sys_updated_on>
+        <template><![CDATA[<div id="network">
+<span ng-if="c.data.loading"><i  class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+<span>Loading...</span></span>
+</div>]]></template>
+    </sp_widget>
+</record_update>

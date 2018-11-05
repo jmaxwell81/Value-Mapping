@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <element label="Acccounts" max_length="40" name="x_snc_acc_val_map_acccounts" type="collection">
+        <element label="Account Manager" max_length="40" name="account_manager" reference="sys_user" type="reference"/>
+        <element display="true" label="Company Name" max_length="40" name="company_name" type="string"/>
+        <element label="Existing Customer" max_length="40" name="existing_customer" type="boolean"/>
+        <element label="Solution Consultant" max_length="40" name="solution_consultant" reference="sys_user" type="reference"/>
+    </element>
+</database>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <element extends="sys_import_set_row" label="Imp Tmpl X Snc Acc Val Map Edges" max_length="40" name="u_imp_tmpl_x_snc_acc_val_map_edges" type="collection">
+        <element attributes="import_attribute_name=From,edge_encryption_enabled=true" label="From" max_length="32" name="u_from" type="string"/>
+        <element attributes="import_attribute_name=To,edge_encryption_enabled=true" label="To" max_length="32" name="u_to" type="string"/>
+    </element>
+</database>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <element label="Edges" max_length="40" name="x_snc_acc_val_map_edges" type="collection">
+        <element label="From" max_length="32" name="u_from" reference="x_snc_acc_val_map_nodes" type="reference"/>
+        <element label="To" max_length="32" name="u_to" reference="x_snc_acc_val_map_nodes" type="reference"/>
+        <index name="index">
+            <element name="u_to"/>
+        </index>
+        <index name="index2">
+            <element name="u_from"/>
+        </index>
+    </element>
+</database>

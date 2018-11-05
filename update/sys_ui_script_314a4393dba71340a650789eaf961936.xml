@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_ui_script">
+    <sys_ui_script action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <description>Angular App for the visnetwork</description>
+        <global>false</global>
+        <name>x_snc_acc_val_map.angular_app_visnetwork</name>
+        <script><![CDATA[angular.module('visNetwork', []);
+angular.module('visNetwork').controller('visNetworkCtrl', function($scope, $element, $http){
+	
+	// get accounts and store
+	$http.get('/api/now/table/x_snc_acc_val_map_acccounts?sysparm_fields=company_name')
+    .then(function(response) {
+        $scope.accounts = response.data.result;
+		
+		console.log('Found the following accounts:');
+		
+		for (var a in $scope.accounts)
+		{	
+			console.log($scope.accounts[a].company_name);
+		}
+    });
+	
+	// get nodes associated with account
+	$http.get('/api/now/table/x_snc_acc_val_map_nodes')
+    .then(function(response) 
+	{
+        $scope.rawNodes = response.data.result;
+		
+		$scope.parsedNodes = [{}];
+		$scope.relatedNodes = [{}];
+		
+		console.log('Found the following nodes:');
+
+		for (var n in $scope.rawNodes)
+		{	
+			console.log($scope.rawNodes[n].label);
+			
+			var shape, colour;
+			
+			if ($scope.rawNodes[n].type == 'Employee')
+			{
+				colour = '#91b7c7';
+				shape = 'dot';
+			}
+			else if ($scope.rawNodes[n].type == 'PLS') 
+			{
+				colour = '#dcd6f7';
+				shape = 'dot';
+			}
+			else if ($scope.rawNodes[n].type == 'Partner') 
+			{
+				colour = '#8aaa79';
+				shape = 'dot';
+			}
+			else if ($scope.rawNodes[n].type == 'Project') 
+			{
+				colour = '#d1f5ff';
+				shape = 'triangle';
+			}
+			else if ($scope.rawNodes[n].type == 'SN Solution') 
+			{
+				colour = '#abc8c0';
+				shape = 'square';
+			}
+			else if ($scope.rawNodes[n].type == 'Current Solution') 
+			{
+				colour = '#fff4e9';
+				shape = 'square';
+			}
+			else if ($scope.rawNodes[n].type == 'Alternative Solution') 
+			{
+				colour = '#e8dbc5';
+				shape = 'square';
+			}
+			else if ($scope.rawNodes[n].type == 'Value') 
+			{
+				colour = '#b185a7';
+				shape = 'star';
+			}
+			else if ($scope.rawNodes[n].type == 'Problem') 
+			{
+				colour = '#cb8589';
+				shape = 'hexagon';
+			}
+			else if ($scope.rawNodes[n].type == 'Business Issue') 
+			{
+				colour = '#f4ac45';
+				shape = 'diamond';
+			}
+			
+			var node = 
+			{
+				id: n, label: $scope.rawNodes[n].label, shape: shape, value: $scope.rawNodes[n].u_weight, color: colour
+			};
+			$scope.parsedNodes.push(node);
+			
+			var relatedNodes = $scope.rawNodes[n].related_nodes.split(',');
+			
+			for (var e in relatedNodes)
+			{
+				for (var m in $scope.rawNodes)
+				{
+					if (n != m)
+					{
+						if ($scope.rawNodes[m].sys_id == relatedNodes[e])
+						{
+							var edge;
+							var rN;
+							var edgeExists = false;
+							if (n < m)
+							{
+								edge = {from: n, to: m};
+								
+								for (rN in $scope.relatedNodes)
+								{
+									if ($scope.relatedNodes[rN].to == edge.to && $scope.relatedNodes[rN].from == edge.from)
+									{
+										edgeExists = true;
+									}
+								}
+								
+								if (edgeExists != true)
+									$scope.relatedNodes.push(edge);
+							}
+							else
+							{
+								edge = {from: m, to: n};
+							 
+								for (rN in $scope.relatedNodes)
+								{
+									if ($scope.relatedNodes[rN].to == edge.to && $scope.relatedNodes[rN].from == edge.from)
+									{
+										edgeExists = true;
+									}
+								}
+								
+								if (edgeExists != true)
+									$scope.relatedNodes.push(edge);
+								
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		$scope.parsedNodes.shift();
+		$scope.relatedNodes.shift();
+		
+		$scope.nodes = new vis.DataSet($scope.parsedNodes);
+		$scope.edges = new vis.DataSet($scope.relatedNodes);
+
+		// create a network
+		$scope.container = $element[0];
+
+		// provide the data in the vis format
+		$scope.data = 
+		{
+			nodes: $scope.nodes,
+			edges: $scope.edges
+		};
+		$scope.options = {
+			manipulation: {
+			enabled: true,
+			initiallyActive: false,
+			addNode: true,
+			addEdge: true,
+			editNode: true,
+			editEdge: true,
+			deleteNode: true,
+			deleteEdge: true,
+			controlNodeStyle:{
+			  // all node options are valid.
+			}
+		  }
+		};
+
+		// initialize your network!
+		$scope.network = new vis.Network($scope.container, $scope.data, $scope.options);
+    });
+});]]></script>
+        <script_name>angular_app_visnetwork</script_name>
+        <sys_class_name>sys_ui_script</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-08-01 16:04:10</sys_created_on>
+        <sys_id>314a4393dba71340a650789eaf961936</sys_id>
+        <sys_mod_count>175</sys_mod_count>
+        <sys_name>x_snc_acc_val_map.angular_app_visnetwork</sys_name>
+        <sys_package display_value="Account Value Mapping" source="x_snc_acc_val_map">49168e13db271340a650789eaf96198b</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Account Value Mapping">49168e13db271340a650789eaf96198b</sys_scope>
+        <sys_update_name>sys_ui_script_314a4393dba71340a650789eaf961936</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-10-15 10:31:00</sys_updated_on>
+        <use_scoped_format>false</use_scoped_format>
+    </sys_ui_script>
+</record_update>
