@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <element label="Node Animation" max_length="40" name="x_snc_acc_val_map_node_animation" type="collection">
+        <element label="Account" max_length="32" name="u_account" reference="x_snc_acc_val_map_acccounts" type="reference"/>
+        <element label="Animated Nodes" max_length="32" name="u_ani_nodes" reference="x_snc_acc_val_map_nodes" type="glide_list"/>
+        <index name="index">
+            <element name="u_ani_nodes"/>
+        </index>
+        <index name="index2">
+            <element name="u_account"/>
+        </index>
+    </element>
+</database>

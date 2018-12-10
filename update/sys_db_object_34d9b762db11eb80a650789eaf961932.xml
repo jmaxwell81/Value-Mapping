@@ -7,9 +7,9 @@
         <caller_access/>
         <client_scripts_access>false</client_scripts_access>
         <configuration_access>false</configuration_access>
-        <create_access>false</create_access>
+        <create_access>true</create_access>
         <create_access_controls>true</create_access_controls>
-        <delete_access>false</delete_access>
+        <delete_access>true</delete_access>
         <extension_model/>
         <is_extendable>false</is_extendable>
         <label>Edges</label>
@@ -25,15 +25,15 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2018-10-25 10:31:37</sys_created_on>
         <sys_id>34d9b762db11eb80a650789eaf961932</sys_id>
-        <sys_mod_count>0</sys_mod_count>
+        <sys_mod_count>3</sys_mod_count>
         <sys_name>Edges</sys_name>
         <sys_package display_value="Account Value Mapping" source="x_snc_acc_val_map">49168e13db271340a650789eaf96198b</sys_package>
         <sys_policy/>
         <sys_scope display_value="Account Value Mapping">49168e13db271340a650789eaf96198b</sys_scope>
         <sys_update_name>sys_db_object_34d9b762db11eb80a650789eaf961932</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-10-25 10:31:37</sys_updated_on>
-        <update_access>false</update_access>
+        <sys_updated_on>2018-12-04 11:55:21</sys_updated_on>
+        <update_access>true</update_access>
         <user_role display_value="x_snc_acc_val_map.edges_user" name="x_snc_acc_val_map.edges_user">def9b762db11eb80a650789eaf961946</user_role>
         <ws_access>true</ws_access>
     </sys_db_object>
