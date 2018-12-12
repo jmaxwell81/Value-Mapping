@@ -6,11 +6,13 @@
 	/* widget controller */
 	var c = this;
 	c.data.loaded = false;
+	c.data.playing = false;
+	c.data.animateClicked = false;
 	
 	//build network based on account selection
 	$rootScope.$on("AVMAccountSelected", function(evt, results){
 
-		c.selected = [];
+		c.data.selected = [];
 		
 		//set loading parameter
 		c.data.loading = true;
@@ -53,13 +55,13 @@
 	c.onDblClick = function(item) {
 		var t = angular.copy(item);
 		item.used = true; // original is now used
-		c.selected.push(t);
+		c.data.selected.push(t);
 	}
 
 	// double on selected removes and unsets Available used
 	c.onSelDblClick = function(item) {
 		moveToAvailable(item);
-		removeItem(c.selected, item);
+		removeItem(c.data.selected, item);
 	}
 
 	function removeItem(array, item) {
@@ -76,9 +78,42 @@
 		})		
 	}
 	
+	c.clear = function(){
+		c.data.selected = [];
+		c.server.update();
+		c.data.animateClicked = false;
+	}
+	
 	c.animate = function(){
-		if (c.selected.length > 0)
-			$rootScope.$broadcast("AVMNodeAnimation", c.selected);
+		if (c.data.selected.length > 0){
+			$rootScope.$broadcast("AVMNodeAnimation", c.data.selected);
+			c.data.animateClicked = true;
+		}
+	}
+	
+	c.playPause = function(){
+		if (c.data.playing == false)
+			c.data.playing = true;
+		else
+			c.data.playing = false;
+		
+		$rootScope.$broadcast("AVMNodeAnimationPlayPause");
+	}
+	
+	c.next = function(){
+		$rootScope.$broadcast("AVMNodeAnimationNext");
+	}
+	
+	c.previous = function(){
+		$rootScope.$broadcast("AVMNodeAnimationPrevious");
+	}
+	
+	c.refresh = function(){
+		c.animate();
+	}
+	
+	c.fit = function(){
+		$rootScope.$broadcast("AVMNodeAnimationFit");
 	}
 }]]></client_script>
         <controller_as>c</controller_as>
@@ -142,14 +177,14 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2018-12-06 11:08:18</sys_created_on>
         <sys_id>65259c9cdb1ee700a650789eaf9619de</sys_id>
-        <sys_mod_count>107</sys_mod_count>
+        <sys_mod_count>209</sys_mod_count>
         <sys_name>AVM Animation</sys_name>
         <sys_package display_value="Account Value Mapping" source="x_snc_acc_val_map">49168e13db271340a650789eaf96198b</sys_package>
         <sys_policy/>
         <sys_scope display_value="Account Value Mapping">49168e13db271340a650789eaf96198b</sys_scope>
         <sys_update_name>sp_widget_65259c9cdb1ee700a650789eaf9619de</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-12-07 13:20:33</sys_updated_on>
+        <sys_updated_on>2018-12-12 13:33:10</sys_updated_on>
         <template><![CDATA[<span ng-if="c.data.loading"><i  class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
   <span>Loading...</span></span>
 <div ng-if="c.data.loaded">
@@ -180,8 +215,8 @@
       <div class="panel-heading">
         <h4 class="panel-title">${Selected}</h4>
       </div>
-      <div class="list-group slush-scrollable" as-sortable="c.selectedAs" ng-model="c.selected">
-        <div ng-repeat="item in c.selected" 
+      <div class="list-group slush-scrollable" as-sortable="c.selectedAs" ng-model="c.data.selected">
+        <div ng-repeat="item in c.data.selected" 
              as-sortable-item
              ng-dblclick="c.onSelDblClick(item)"
              class="list-group-item">
@@ -194,7 +229,16 @@
     </div>
   </div>
   <div class="col-sm-12" style="margin-top:10px;">
-    <button ng-click="c.animate()" class="btn btn-primary pull-right">${Animate}</button>
+    <button ng-if="c.data.selected.length > 0" ng-click="c.clear()" class="btn btn-default fa fa-eraser"></button>
+    <button ng-if="c.data.selected.length > 0 && c.data.animateClicked" ng-click="c.refresh()" class="btn btn-default fa fa-refresh"></button>
+    <button ng-if="!c.data.playing && c.data.animateClicked" ng-click="c.fit()" class="btn btn-default fa fa-arrows-alt"></button>
+    
+    <button ng-if="!c.data.animateClicked" ng-click="c.animate()" class="btn btn-primary pull-right">${Animate}</button>
+    
+    <button ng-if="!c.data.playing && c.data.animateClicked" ng-click="c.next()" class="btn btn-default fa fa-chevron-right pull-right"></button>
+    <button ng-if="!c.data.playing && c.data.animateClicked" ng-click="c.playPause()" class="btn btn-default fa fa-play pull-right"></button>
+    <button ng-if="c.data.playing && c.data.animateClicked" ng-click="c.playPause()" class="btn btn-default fa fa-pause pull-right"></button>
+    <button ng-if="!c.data.playing && c.data.animateClicked" ng-click="c.previous()" class="btn btn-default fa fa-chevron-left pull-right"></button>
   </div>
 </div>
 ]]></template>

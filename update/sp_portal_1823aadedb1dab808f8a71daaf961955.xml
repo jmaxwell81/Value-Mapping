@@ -2,7 +2,7 @@
 <record_update table="sp_portal">
     <sp_portal action="INSERT_OR_UPDATE">
         <css_variables/>
-        <default>false</default>
+        <default>true</default>
         <homepage/>
         <icon/>
         <kb_knowledge_base/>
@@ -21,14 +21,14 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2018-10-24 09:34:15</sys_created_on>
         <sys_id>1823aadedb1dab808f8a71daaf961955</sys_id>
-        <sys_mod_count>1</sys_mod_count>
+        <sys_mod_count>2</sys_mod_count>
         <sys_name>Account Value Mapping</sys_name>
         <sys_package display_value="Account Value Mapping" source="x_snc_acc_val_map">49168e13db271340a650789eaf96198b</sys_package>
         <sys_policy/>
         <sys_scope display_value="Account Value Mapping">49168e13db271340a650789eaf96198b</sys_scope>
         <sys_update_name>sp_portal_1823aadedb1dab808f8a71daaf961955</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-10-30 16:22:32</sys_updated_on>
+        <sys_updated_on>2018-12-11 11:22:01</sys_updated_on>
         <theme display_value="AVM">650a7614dbedef80a650789eaf96197b</theme>
         <title>Account Value Mapping</title>
         <url_suffix>avm</url_suffix>

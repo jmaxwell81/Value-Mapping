@@ -2,12 +2,13 @@
 <record_update table="sp_widget">
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
-        <client_script><![CDATA[function($scope, $rootScope, spModal) {
+        <client_script><![CDATA[function($scope, $rootScope, spModal, $timeout) {
 	var c = this;
 	var network = null;
 	var types;
 	var a = 0;
 	var animationPhase = 0;
+	var animationPaused = true;
 	var animatedNodes = null;
 
 	c.data.loading = false;
@@ -216,29 +217,61 @@
 		console.log('start animation');
 		animation();
 	});
+	
+	$rootScope.$on("AVMNodeAnimationPlayPause", function(evt){
+		if (animationPaused == true){
+			animationPaused = false;
+			$timeout(animation, 2000);
+		}
+		else
+			animationPaused = true;
+	});
+	
+	$rootScope.$on("AVMNodeAnimationNext", function(evt){
+		if (a < animatedNodes.length){
+			a++;
+			focusNode(animatedNodes[a]);
+			animationPhase = 0;
+		}
+	});
+
+	$rootScope.$on("AVMNodeAnimationPrevious", function(evt){
+		if (a > 0){
+			a--;
+			focusNode(animatedNodes[a]);
+			animationPhase = 0;
+		}
+	});
+	
+	$rootScope.$on("AVMNodeAnimationFit", function(evt){
+		if (a < animatedNodes.length){
+			$timeout(fitAnimated(), 2000);
+			animationPhase = 1;
+		}
+	});
 
 	function animation(){
-		if (a < animatedNodes.length){
-			if (animationPhase == 0){
-				fitAnimated();
-				animationPhase = 1;
-				console.log('fit');
+		if(animationPaused == false){
+			if (a < animatedNodes.length){
+				if (animationPhase == 0){
+					fitAnimated();
+					animationPhase = 1;
+				}
+				else{
+					focusNode(animatedNodes[a]);
+					a++;
+					animationPhase = 0;
+				}
+				
+				$timeout(animation, 2000);
 			}
-			else{
-				focusNode(animatedNodes[a]);
-				a++;
-				animationPhase = 0;
-				console.log('focus');
-			}
-
-			setTimeout(animation, 1000);
 		}
 	}
 
 	function fitAnimated(){
 		var options = {
 			offset: {x:0, y:0},
-			duration: 1000,
+			duration: 2000,
 			easingFunction: 'easeInOutQuad'
 		};
 		network.fit({animation:options});
@@ -248,9 +281,10 @@
 		var options = {
 			offset: {x:0, y:0},
 			scale: 2,
-			locked: false,
-			duration: 1000,
-			easingFunction: 'easeInQuad'
+			animation: {
+				duration: 2000,
+				easingFunction: 'easeInOutQuad'
+			}
 		};
 		network.focus(node.sys_id.display_value, options);
 	}
@@ -358,14 +392,14 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2018-10-23 16:53:54</sys_created_on>
         <sys_id>f64eb2cadb91ab808f8a71daaf9619e4</sys_id>
-        <sys_mod_count>385</sys_mod_count>
+        <sys_mod_count>423</sys_mod_count>
         <sys_name>Account Value Mapping</sys_name>
         <sys_package display_value="Account Value Mapping" source="x_snc_acc_val_map">49168e13db271340a650789eaf96198b</sys_package>
         <sys_policy/>
         <sys_scope display_value="Account Value Mapping">49168e13db271340a650789eaf96198b</sys_scope>
         <sys_update_name>sp_widget_f64eb2cadb91ab808f8a71daaf9619e4</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-12-07 14:18:45</sys_updated_on>
+        <sys_updated_on>2018-12-12 13:35:45</sys_updated_on>
         <template><![CDATA[<span ng-if="c.data.loading"><i  class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
   <span>Loading...</span>
 </span>

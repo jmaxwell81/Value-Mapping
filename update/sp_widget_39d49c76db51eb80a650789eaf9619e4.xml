@@ -11,9 +11,7 @@
 }]]></client_script>
         <controller_as>c</controller_as>
         <css>.form-horizontal {
-    position: left;
-    padding-top: 10px;
-  	max-width: 300px;
+  padding-top: 10px;
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -50,21 +48,19 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2018-10-25 12:28:59</sys_created_on>
         <sys_id>39d49c76db51eb80a650789eaf9619e4</sys_id>
-        <sys_mod_count>99</sys_mod_count>
+        <sys_mod_count>118</sys_mod_count>
         <sys_name>Account Form</sys_name>
         <sys_package display_value="Account Value Mapping" source="x_snc_acc_val_map">49168e13db271340a650789eaf96198b</sys_package>
         <sys_policy/>
         <sys_scope display_value="Account Value Mapping">49168e13db271340a650789eaf96198b</sys_scope>
         <sys_update_name>sp_widget_39d49c76db51eb80a650789eaf9619e4</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-10-31 10:43:36</sys_updated_on>
+        <sys_updated_on>2018-12-11 12:00:18</sys_updated_on>
         <template><![CDATA[<form class="form-horizontal">
   <div class="form-group">
-    <label class="col-xs-12 col-md-3 control-label">
-      <span class="label-text">Account</span>
-    </label>
-    <div class="col-xs-12 col-md-9 form-field input_controls">
+    <div class="col-md-12 form-field input_controls">
       <select class="form-control" ng-model="selectedAcc" ng-change="c.changeAccount(selectedAcc)" ng-options="a.name for a in c.data.accounts">
+      	<option value="" disabled selected>Select an Account</option>
       </select>
     </div>
   </div>

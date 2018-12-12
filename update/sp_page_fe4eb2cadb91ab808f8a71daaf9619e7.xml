@@ -2,7 +2,7 @@
 <record_update table="sp_page">
     <sp_page action="INSERT_OR_UPDATE">
         <category>custom</category>
-        <css/>
+        <css>.col-md-9 { border-left: 2px solid #ddd; }</css>
         <draft>false</draft>
         <dynamic_title_structure/>
         <id>account_value_mapping</id>
@@ -14,14 +14,14 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2018-10-23 16:53:54</sys_created_on>
         <sys_id>fe4eb2cadb91ab808f8a71daaf9619e7</sys_id>
-        <sys_mod_count>4</sys_mod_count>
+        <sys_mod_count>12</sys_mod_count>
         <sys_name>account_value_mapping</sys_name>
         <sys_package display_value="Account Value Mapping" source="x_snc_acc_val_map">49168e13db271340a650789eaf96198b</sys_package>
         <sys_policy/>
         <sys_scope display_value="Account Value Mapping">49168e13db271340a650789eaf96198b</sys_scope>
         <sys_update_name>sp_page_fe4eb2cadb91ab808f8a71daaf9619e7</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-10-25 16:37:03</sys_updated_on>
+        <sys_updated_on>2018-12-11 11:48:09</sys_updated_on>
         <title>Account Value Mapping - Test Page</title>
     </sp_page>
     <sys_translated_text action="delete_multiple" query="documentkey=fe4eb2cadb91ab808f8a71daaf9619e7"/>
