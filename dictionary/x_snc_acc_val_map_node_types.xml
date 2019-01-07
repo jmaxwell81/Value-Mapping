@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<database>
+<?xml version="1.0" encoding="UTF-8"?><database>
     <element label="Node Types" max_length="40" name="x_snc_acc_val_map_node_types" type="collection">
         <element label="Colour" max_length="40" name="u_colour" type="string"/>
         <element label="Shape" max_length="40" name="u_shape" type="string"/>

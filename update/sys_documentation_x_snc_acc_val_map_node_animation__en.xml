@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<record_update>
+<?xml version="1.0" encoding="UTF-8"?><record_update>
     <sys_documentation element="" label="Node Animation" language="en" table="x_snc_acc_val_map_node_animation">
         <sys_documentation action="INSERT_OR_UPDATE">
             <element/>

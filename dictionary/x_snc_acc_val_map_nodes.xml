@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<database>
+<?xml version="1.0" encoding="UTF-8"?><database>
     <element label="Nodes" max_length="40" name="x_snc_acc_val_map_nodes" type="collection">
         <element display="true" label="Name of Person/Solution/Problem" max_length="40" name="label" type="string"/>
         <element label="Account" mandatory="true" max_length="32" name="u_account" reference="x_snc_acc_val_map_acccounts" type="reference"/>

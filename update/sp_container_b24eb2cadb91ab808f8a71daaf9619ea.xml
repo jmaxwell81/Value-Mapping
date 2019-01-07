@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<record_update table="sp_container">
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_container">
     <sp_container action="INSERT_OR_UPDATE">
         <background_color/>
         <background_image/>
@@ -7,7 +6,7 @@
         <bootstrap_alt>false</bootstrap_alt>
         <class_name/>
         <container_class_name/>
-        <name>Account Value Mapping - Test Page - Container 1</name>
+        <name>Account Value Mapping - Container 1</name>
         <order>1</order>
         <sp_page display_value="account_value_mapping">fe4eb2cadb91ab808f8a71daaf9619e7</sp_page>
         <subheader>false</subheader>
@@ -15,14 +14,14 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2018-10-23 16:53:54</sys_created_on>
         <sys_id>b24eb2cadb91ab808f8a71daaf9619ea</sys_id>
-        <sys_mod_count>11</sys_mod_count>
-        <sys_name>Account Value Mapping - Test Page - Container 1</sys_name>
+        <sys_mod_count>12</sys_mod_count>
+        <sys_name>Account Value Mapping - Container 1</sys_name>
         <sys_package display_value="Account Value Mapping" source="x_snc_acc_val_map">49168e13db271340a650789eaf96198b</sys_package>
         <sys_policy/>
         <sys_scope display_value="Account Value Mapping">49168e13db271340a650789eaf96198b</sys_scope>
         <sys_update_name>sp_container_b24eb2cadb91ab808f8a71daaf9619ea</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-10-30 16:34:16</sys_updated_on>
+        <sys_updated_on>2018-12-12 16:12:18</sys_updated_on>
         <title/>
         <width>container-fluid</width>
     </sp_container>

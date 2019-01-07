@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<record_update table="sp_row">
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_row">
     <sp_row action="INSERT_OR_UPDATE">
         <class_name/>
         <order>1</order>
         <sp_column/>
-        <sp_container display_value="Account Value Mapping - Test Page - Container 1">b24eb2cadb91ab808f8a71daaf9619ea</sp_container>
+        <sp_container display_value="Account Value Mapping - Container 1">b24eb2cadb91ab808f8a71daaf9619ea</sp_container>
         <sys_class_name>sp_row</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2018-12-07 11:25:37</sys_created_on>
